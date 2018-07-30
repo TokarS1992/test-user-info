@@ -1,7 +1,7 @@
 <div class="col-md-6 offset-md-3">
   <div class="login-wrapper">
     <div class="col-md-10 offset-md-1">
-      <h3>Register user</h3>
+      <h3>{{isEdit ? 'Edit user' : 'Register user'}}</h3>
 
       <form action="" [formGroup]="formCreateUser" novalidate (ngSubmit)="createUser(formCreateUser)">
         <div class="form-group">
@@ -78,8 +78,8 @@
         </div>
 
           <div class="form-group">
-              <button type="submit" class="btn btn-primary pointer" [disabled]="loading">Save</button>
-              <a [routerLink]="'/login'" class="btn btn-link">Cancel</a>
+              <button type="submit" class="btn btn-primary pointer" [disabled]="loading">{{isEdit ? 'Edit' : 'Save'}}</button>
+              <button class="btn btn-link" (click)="toProfileOrLogin()">Cancel</button>
           </div>
       </form>
     </div>

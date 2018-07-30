@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../services/user.service';
+import { AuthenticationService } from '../../services/authentication.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { User } from '../../interfaces/user';
 
@@ -9,14 +10,23 @@ import { User } from '../../interfaces/user';
   styleUrls: ['./user-detail.component.scss']
 })
 export class UserDetailComponent implements OnInit {
-    private currentUser: User = {};
+    private currentUser: User = {
+        id: 0,
+        username: '',
+        secondname: '',
+        phone: '',
+        email: '',
+        password: '',
+        token: ''
+    };
     constructor(
       private httpUserService: UserService,
+      private authService: AuthenticationService,
       private activeRoute: ActivatedRoute,
       private router: Router
     ) { }
     ngOnInit() {
-        this.httpUserService.getUserById(+this.activeRoute.params.value.id).subscribe(user => {
+        this.httpUserService.getUserById(+this.activeRoute.params.value.id).subscribe((user: User) => {
             this.currentUser = user;
         }, err => {
             const currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -28,5 +38,12 @@ export class UserDetailComponent implements OnInit {
                 this.currentUser = currentUser;
             }
         });
+    }
+    public toEditProfile() {
+        this.router.navigate([`/users/${this.currentUser.id}/edit`]);
+    }
+    public logout() {
+        this.authService.logout();
+        this.router.navigate(['/']);
     }
 }

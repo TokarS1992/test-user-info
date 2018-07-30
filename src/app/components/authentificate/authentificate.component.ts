@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { Location } from '@angular/common';
 import { UserService } from '../../services/user.service';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators} from '@angular/forms';
@@ -14,12 +15,12 @@ const maxLength = 16;
   providers: [UserService]
 })
 export class AuthentificateComponent implements OnInit {
-  public formCreateUser: FormGroup;
-  public minLength: number = minLength;
-  public maxLength: number = maxLength;
-  public mask: Array<string | RegExp>;
-  public loading = false;
-  public model: User = {
+  private formCreateUser: FormGroup;
+  private minLength: number = minLength;
+  private maxLength: number = maxLength;
+  private mask: Array<string | RegExp>;
+  private loading = false;
+  @Input() private model: User = {
       id: 0,
       username: '',
       secondname: '',
@@ -28,10 +29,13 @@ export class AuthentificateComponent implements OnInit {
       password: '',
       token: ''
   };
+  @Input() private isEdit = false;
   constructor(
       public httpUserService: UserService,
-      public router: Router
-  ) {
+      public router: Router,
+      public location: Location
+  ) {}
+  ngOnInit() {
       this.mask = ['+', '3', '8', '(', '0', /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, '-', /\d/, /\d/];
       this.formCreateUser = new FormGroup({
           username: new FormControl(this.model.username, [
@@ -59,8 +63,7 @@ export class AuthentificateComponent implements OnInit {
           ])
       });
   }
-  ngOnInit() {}
-  public createUser(form: FormGroup) {
+  private createUser(form: FormGroup) {
       if (form.invalid) {
           for (const control in form.controls) {
               form.controls[control].markAsTouched();
@@ -77,5 +80,11 @@ export class AuthentificateComponent implements OnInit {
       }, err => {
           console.log(err);
       });
+  }
+  private toProfileOrLogin() {
+      if (!this.isEdit) {
+          this.router.navigate(['/login']);
+      }
+      this.location.back();
   }
 }

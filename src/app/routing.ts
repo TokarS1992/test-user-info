@@ -6,12 +6,14 @@ import { IndexComponent } from './components/index/index.component';
 import { AuthentificateComponent } from './components/authentificate/authentificate.component';
 import { UserDetailComponent } from './components/user-detail/user-detail.component';
 import { NotFountPageComponent } from './components/not-fount-page/not-fount-page.component';
+import { UserEditComponent } from './components/user-edit/user-edit.component';
 
 const appRoutes: Routes = [
     { path: '', component: IndexComponent, canActivate: [AuthGuardGuard] },
     { path: 'login', component: LoginComponent },
     { path: 'authenticate', component: AuthentificateComponent },
     { path: 'users/:id', component: UserDetailComponent, canActivate: [AuthGuardGuard]},
+    { path: 'users/:id/edit', component: UserEditComponent, canActivate: [AuthGuardGuard]},
     { path: 'not-found', component: NotFountPageComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '/not-found' }

@@ -22,6 +22,10 @@ import { AuthentificateComponent } from './components/authentificate/authentific
 import { BackendApiInterceptor } from './interceptors/backend-api.interceptor';
 import { JwtInterceptor } from './interceptors/jwt.interceptor';
 import { NotFountPageComponent } from './components/not-fount-page/not-fount-page.component';
+import { UserService } from './services/user.service';
+import { AuthenticationService } from './services/authentication.service';
+import { KeysPipe } from './pipes/keys.pipe';
+import { UserEditComponent } from './components/user-edit/user-edit.component';
 
 @NgModule({
     exports: [
@@ -40,7 +44,9 @@ export class MaterialModule {}
     UserDetailComponent,
     LoginComponent,
     IndexComponent,
-    NotFountPageComponent
+    NotFountPageComponent,
+    UserEditComponent,
+    KeysPipe
   ],
   imports: [
     TextMaskModule,
@@ -54,6 +60,8 @@ export class MaterialModule {}
   ],
   providers: [
       AuthGuardGuard,
+      UserService,
+      AuthenticationService,
       {
           provide: HTTP_INTERCEPTORS,
           useClass: BackendApiInterceptor,

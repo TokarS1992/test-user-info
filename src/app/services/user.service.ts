@@ -27,4 +27,7 @@ export class UserService extends ErrorsTypes {
         catchError(this.handleCatchError)
     );
   }
+  public getLocalUser() {
+      return JSON.parse(localStorage.getItem('currentUser'));
+  }
 }
