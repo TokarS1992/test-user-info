@@ -1,0 +1,41 @@
+<div class="col-md-6 offset-md-3">
+    <div class="login-wrapper">
+        <div class="col-md-10 offset-md-1">
+            <h3>Login</h3>
+
+            <form action="" [formGroup]="form" novalidate (ngSubmit)="submitForm(form)">
+                <div class="form-group">
+                    <label>Email</label>
+                    <mat-form-field class="full-width">
+                        <input matInput placeholder="Email" [formControl]="form.controls['email']">
+                    </mat-form-field>
+
+                    <div class="alert alert-danger"
+                         *ngIf="form.controls['email'].errors && form.controls['email'].touched">
+                        <span *ngIf="form.controls['email'].hasError('required')">This field required</span>
+                        <span *ngIf="form.controls['email'].hasError('email')">Incorrect email address</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <mat-form-field class="full-width">
+                        <input matInput placeholder="Password" [formControl]="form.controls['password']">
+                    </mat-form-field>
+
+                    <div class="alert alert-danger"
+                         *ngIf="form.controls['password'].errors && form.controls['password'].touched">
+                        <span *ngIf="form.controls['password'].hasError('required')">This field required</span>
+                        <span *ngIf="form.controls['password'].hasError('minlength') && form.controls['password'].hasError('pattern')">Invalid enter symbols. Correct: any letters or/and numbers without special character</span>
+                        <span *ngIf="form.controls['password'].hasError('minlength')">Invalid enter min length password. Correct length: {{minLength}}</span>
+                        <span *ngIf="form.controls['password'].hasError('maxlength')">Invalid enter max length password. Correct length: {{maxLength}}</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary pointer" [disabled]="loading">Login</button>
+                    <a [routerLink]="'/authenticate'" class="btn btn-link">Register</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
