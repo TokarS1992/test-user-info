@@ -63,7 +63,8 @@ export class AuthentificateComponent implements OnInit {
           ])
       });
   }
-  private createUser(form: FormGroup) {
+  private createUser(form: FormGroup, event: Event) {
+      event.preventDefault();
       if (form.invalid) {
           for (const control in form.controls) {
               form.controls[control].markAsTouched();
@@ -85,6 +86,6 @@ export class AuthentificateComponent implements OnInit {
       if (!this.isEdit) {
           this.router.navigate(['/login']);
       }
-      this.location.back();
+      return this.location.back();
   }
 }

@@ -9,7 +9,6 @@ import { ErrorsTypes } from '../utils/abstructError';
   providedIn: 'root'
 })
 export class UserService extends ErrorsTypes {
-
   constructor(
       private http: HttpClient
   ) {
@@ -23,7 +22,11 @@ export class UserService extends ErrorsTypes {
   }
   public getUserById(id: number) {
     return this.http.get(`/api/users/${id}`).pipe(
-        map(data => data),
+        map((data: any) => {
+            delete data.password;
+            delete data.id;
+            return data;
+        }),
         catchError(this.handleCatchError)
     );
   }

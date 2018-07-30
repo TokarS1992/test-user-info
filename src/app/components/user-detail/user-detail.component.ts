@@ -10,15 +10,7 @@ import { User } from '../../interfaces/user';
   styleUrls: ['./user-detail.component.scss']
 })
 export class UserDetailComponent implements OnInit {
-    private currentUser: User = {
-        id: 0,
-        username: '',
-        secondname: '',
-        phone: '',
-        email: '',
-        password: '',
-        token: ''
-    };
+    private currentUser = {};
     constructor(
       private httpUserService: UserService,
       private authService: AuthenticationService,
@@ -40,7 +32,7 @@ export class UserDetailComponent implements OnInit {
         });
     }
     public toEditProfile() {
-        this.router.navigate([`/users/${this.currentUser.id}/edit`]);
+        this.router.navigate([`/users/${this.httpUserService.getLocalUser().id}/edit`]);
     }
     public logout() {
         this.authService.logout();

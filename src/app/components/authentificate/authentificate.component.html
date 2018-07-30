@@ -3,7 +3,7 @@
     <div class="col-md-10 offset-md-1">
       <h3>{{isEdit ? 'Edit user' : 'Register user'}}</h3>
 
-      <form action="" [formGroup]="formCreateUser" novalidate (ngSubmit)="createUser(formCreateUser)">
+      <form action="" [formGroup]="formCreateUser" novalidate (ngSubmit)="createUser(formCreateUser, $event)">
         <div class="form-group">
           <label>User name</label>
 
