@@ -3,7 +3,7 @@
     <div class="col-md-10 offset-md-1">
       <h3>{{isEdit ? 'Edit user' : 'Register user'}}</h3>
 
-      <form action="" [formGroup]="formCreateUser" novalidate (ngSubmit)="createUser(formCreateUser, $event)">
+      <form action="" [formGroup]="formCreateUser" novalidate>
         <div class="form-group">
           <label>User name</label>
 
@@ -78,8 +78,8 @@
         </div>
 
           <div class="form-group">
-              <button type="submit" class="btn btn-primary pointer" [disabled]="loading">{{isEdit ? 'Edit' : 'Save'}}</button>
-              <button class="btn btn-link" (click)="toProfileOrLogin()">Cancel</button>
+              <button type="submit" class="btn btn-primary pointer" [disabled]="loading" (click)="(formCreateUser)">{{isEdit ? 'Edit' : 'Save'}}</button>
+              <button class="btn btn-link" (click)="toProfileOrLogin(); formCreateUser.reset()">Cancel</button>
           </div>
       </form>
     </div>

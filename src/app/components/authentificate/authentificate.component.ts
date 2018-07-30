@@ -63,8 +63,7 @@ export class AuthentificateComponent implements OnInit {
           ])
       });
   }
-  private createUser(form: FormGroup, event: Event) {
-      event.preventDefault();
+  private createUser(form: FormGroup) {
       if (form.invalid) {
           for (const control in form.controls) {
               form.controls[control].markAsTouched();
