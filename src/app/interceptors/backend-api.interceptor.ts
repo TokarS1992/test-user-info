@@ -51,6 +51,21 @@ export class BackendApiInterceptor implements HttpInterceptor {
             localStorage.setItem('users', JSON.stringify(users));
             return Observable.of(new HttpResponse({ status: 200, body: newUser }));
           }
+          if (request.url.match(/\/api\/users\/\d+$/) && request.method === 'GET') {
+              const urlParts = request.url.split('/');
+              const id = parseInt(urlParts[urlParts.length - 1]);
+              const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+              const findedUsers = users.filter((user: User) => {
+                  return user.id === id;
+              });
+              if (findedUsers.length) {
+                  if (findedUsers[0].id !== currentUser.id) {
+                      return Observable.throwError('Not access');
+                  }
+                  return Observable.of(new HttpResponse({ status: 200, body: findedUsers[0] }));
+              }
+              return Observable.throwError('User not found');
+          }
       });
   }
 }

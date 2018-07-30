@@ -13,20 +13,18 @@ const maxLength = 16;
   providers: [ AuthenticationService ]
 })
 export class LoginComponent implements OnInit {
-  private returnUrl: string;
   private form: FormGroup;
   private minLength: number = minLength;
   private maxLength: number = maxLength;
   private loading = false;
+  private loginError = false;
   constructor(
       private authService: AuthenticationService,
-      private route: ActivatedRoute
+      private route: Router
   ) { }
 
   ngOnInit() {
     this.authService.logout();
-
-    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
     this.form = new FormGroup({
         email: new FormControl('', [
             Validators.email,
@@ -50,9 +48,12 @@ export class LoginComponent implements OnInit {
       this.loading = true;
       const { email, password } = form.controls;
       this.authService.login(email.value, password.value).subscribe(user => {
-          console.log(user);
+          this.loginError = false;
+          this.route.navigate([`/users/${user.id}`]);
       }, error => {
-          console.log(error);
+          if (error === 'Username or password is incorrect') {
+              this.loginError = error;
+          }
           this.loading = false;
       });
   }

@@ -9,13 +9,24 @@ import { User } from '../../interfaces/user';
   styleUrls: ['./user-detail.component.scss']
 })
 export class UserDetailComponent implements OnInit {
-    private currentUser: User;
+    private currentUser: User = {};
     constructor(
       private httpUserService: UserService,
-      private activeRoute: ActivatedRoute
+      private activeRoute: ActivatedRoute,
+      private router: Router
     ) { }
     ngOnInit() {
-      this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-      console.log(this.activeRoute, this.currentUser);
+        this.httpUserService.getUserById(+this.activeRoute.params.value.id).subscribe(user => {
+            this.currentUser = user;
+        }, err => {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (err === 'User not found') {
+                this.router.navigate(['/not-found']);
+            }
+            if (err === 'Not access') {
+                this.router.navigate([`/users/${currentUser.id}`]);
+                this.currentUser = currentUser;
+            }
+        });
     }
 }

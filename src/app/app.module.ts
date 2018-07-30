@@ -21,6 +21,7 @@ import { UserDetailComponent } from './components/user-detail/user-detail.compon
 import { AuthentificateComponent } from './components/authentificate/authentificate.component';
 import { BackendApiInterceptor } from './interceptors/backend-api.interceptor';
 import { JwtInterceptor } from './interceptors/jwt.interceptor';
+import { NotFountPageComponent } from './components/not-fount-page/not-fount-page.component';
 
 @NgModule({
     exports: [
@@ -38,7 +39,8 @@ export class MaterialModule {}
     AuthentificateComponent,
     UserDetailComponent,
     LoginComponent,
-    IndexComponent
+    IndexComponent,
+    NotFountPageComponent
   ],
   imports: [
     TextMaskModule,
