@@ -9,15 +9,6 @@ import { UserService } from '../../services/user.service';
   styleUrls: ['./not-fount-page.component.scss']
 })
 export class NotFountPageComponent implements OnInit {
-  private currentUser: User = {
-      id: 0,
-      username: '',
-      secondname: '',
-      phone: '',
-      email: '',
-      password: '',
-      token: ''
-  };
   constructor(
       private router: Router,
       private userService: UserService

@@ -10,7 +10,17 @@ import { User } from '../../interfaces/user';
   styleUrls: ['./user-detail.component.scss']
 })
 export class UserDetailComponent implements OnInit {
-    private currentUser = {};
+    private currentUser: User = {
+        id: 0,
+        username: '',
+        secondname: '',
+        phone: '',
+        email: '',
+        password: '',
+        token: '',
+        remember: false,
+        products: []
+    };
     constructor(
       private httpUserService: UserService,
       private authService: AuthenticationService,
@@ -18,7 +28,7 @@ export class UserDetailComponent implements OnInit {
       private router: Router
     ) { }
     ngOnInit() {
-        this.httpUserService.getUserById(+this.activeRoute.params.value.id).subscribe((user: User) => {
+        this.httpUserService.getUserById(+this.activeRoute.snapshot.params.id).subscribe((user: User) => {
             this.currentUser = user;
         }, err => {
             const currentUser = JSON.parse(localStorage.getItem('currentUser'));

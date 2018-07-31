@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AuthenticationService } from '../../services/authentication.service';
-import { FormGroup, FormControl, Validators} from '@angular/forms';
+import { FormGroup} from '@angular/forms';
+import { AbstructForm } from '../../utils/abstructForm';
 
 const minLength = 6;
 const maxLength = 16;
@@ -12,7 +13,7 @@ const maxLength = 16;
   styleUrls: ['./login.component.scss'],
   providers: [ AuthenticationService ]
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent extends AbstructForm implements OnInit {
   private form: FormGroup;
   private minLength: number = minLength;
   private maxLength: number = maxLength;
@@ -21,21 +22,20 @@ export class LoginComponent implements OnInit {
   constructor(
       private authService: AuthenticationService,
       private route: Router
-  ) { }
+  ) {
+      super();
+  }
 
   ngOnInit() {
     this.authService.logout();
     this.form = new FormGroup({
-        email: new FormControl('', [
-            Validators.email,
-            Validators.required
-        ]),
-        password: new FormControl('', [
-            Validators.required,
-            Validators.pattern(`[a-zA-Z0-9]+`),
-            Validators.minLength(this.minLength),
-            Validators.maxLength(this.maxLength)
-        ])
+        email: this.getFormContol('', {required: true, email: true}),
+        password: this.getFormContol('', {
+            required: true,
+            minLength: this.minLength,
+            maxLength: this.maxLength,
+            pattern: `[a-zA-Z0-9]+`}),
+        remember: this.getFormContol(false)
     });
   }
   public submitForm(form: FormGroup) {
@@ -46,8 +46,8 @@ export class LoginComponent implements OnInit {
           return false;
       }
       this.loading = true;
-      const { email, password } = form.controls;
-      this.authService.login(email.value, password.value).subscribe(user => {
+      const { email, password, remember } = form.controls;
+      this.authService.login(email.value, password.value, remember.value).subscribe(user => {
           this.loginError = false;
           this.route.navigate([`/users/${user.id}`]);
       }, error => {

@@ -23,8 +23,14 @@ export class UserService extends ErrorsTypes {
   public getUserById(id: number) {
     return this.http.get(`/api/users/${id}`).pipe(
         map((data: any) => {
-            delete data.password;
-            delete data.id;
+            return data;
+        }),
+        catchError(this.handleCatchError)
+    );
+  }
+  public updateUserById(id: number, body) {
+    return this.http.put(`/api/users/${id}`, body).pipe(
+        map((data: any) => {
             return data;
         }),
         catchError(this.handleCatchError)

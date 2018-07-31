@@ -1,25 +1,34 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, OnChanges, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import { Location } from '@angular/common';
 import { UserService } from '../../services/user.service';
+import { SharedService } from '../../services/shared.service';
 import { Router } from '@angular/router';
-import { FormGroup, FormControl, Validators} from '@angular/forms';
+import { FormGroup} from '@angular/forms';
 import { User } from '../../interfaces/user';
+import { AbstructForm } from '../../utils/abstructForm';
 
 const minLength = 2;
-const maxLength = 16;
+const maxLength = 255;
+const maxLengthPass = 16;
+const minLengthPass = 6;
+
+const timerAcrossToLogin = 3;
 
 @Component({
   selector: 'app-authentificate',
   templateUrl: './authentificate.component.html',
   styleUrls: ['./authentificate.component.scss'],
-  providers: [UserService]
+  providers: [ SharedService ]
 })
-export class AuthentificateComponent implements OnInit {
+export class AuthentificateComponent extends AbstructForm implements OnInit, OnChanges {
   private formCreateUser: FormGroup;
   private minLength: number = minLength;
   private maxLength: number = maxLength;
+  private maxLengthPass: number = maxLengthPass;
+  private minLengthPass: number = minLengthPass;
   private mask: Array<string | RegExp>;
   private loading = false;
+  private timer;
   @Input() private model: User = {
       id: 0,
       username: '',
@@ -27,41 +36,44 @@ export class AuthentificateComponent implements OnInit {
       phone: '',
       email: '',
       password: '',
-      token: ''
+      token: '',
+      remember: false,
+      products: []
   };
   @Input() private isEdit = false;
+  @Input() isUpdate = false;
+  @Output() editForm = new EventEmitter<any>();
+  @Output() changePass = new EventEmitter<any>();
   constructor(
-      public httpUserService: UserService,
-      public router: Router,
-      public location: Location
-  ) {}
+      private httpUserService: UserService,
+      private router: Router,
+      private location: Location,
+      private shared: SharedService
+  ) {
+      super();
+  }
   ngOnInit() {
       this.mask = ['+', '3', '8', '(', '0', /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, '-', /\d/, /\d/];
       this.formCreateUser = new FormGroup({
-          username: new FormControl(this.model.username, [
-              Validators.required,
-              Validators.minLength(2),
-              Validators.maxLength(255),
-          ]),
-          secondname: new FormControl(this.model.secondname, [
-              Validators.required,
-              Validators.minLength(2),
-              Validators.maxLength(255)
-          ]),
-          phone: new FormControl(this.model.phone, [
-              Validators.required
-          ]),
-          email: new FormControl(this.model.email, [
-              Validators.required,
-              Validators.email
-          ]),
-          password: new FormControl(this.model.password, [
-              Validators.required,
-              Validators.pattern(`[a-zA-Z0-9]+`),
-              Validators.minLength(this.minLength),
-              Validators.maxLength(this.maxLength)
-          ])
+          username: this.getFormContol(this.model.username, {required: true, minLength: this.minLength, maxLength: this.maxLength}),
+          secondname: this.getFormContol(this.model.username, {required: true, minLength: this.minLength, maxLength: this.maxLength}),
+          phone: this.getFormContol(this.model.phone, {required: true}),
+          email: this.getFormContol(this.model.email, {required: true, email: true}),
+          password: this.getFormContol(this.model.password, {
+              required: true,
+              minLength: this.minLengthPass,
+              maxLength: this.maxLengthPass,
+              pattern: `[a-zA-Z0-9]+`
+          })
       });
+  }
+  ngOnChanges(changes: SimpleChanges) {
+      if (changes['isUpdate'].currentValue) {
+          this.timing(`/users/${this.httpUserService.getLocalUser().id}`, timerAcrossToLogin);
+      }
+  }
+  private changePassHandler() {
+      this.changePass.emit();
   }
   private createUser(form: FormGroup) {
       if (form.invalid) {
@@ -75,9 +87,14 @@ export class AuthentificateComponent implements OnInit {
       for (const control in form.controls) {
           body[control] = form.controls[control].value;
       }
+      if (this.isEdit) {
+          this.editForm.emit({user: body});
+          return true;
+      }
       this.httpUserService.createUser(body).subscribe(data => {
-          this.router.navigate(['/login']);
+          this.timing('/login', timerAcrossToLogin);
       }, err => {
+          this.loading = false;
           console.log(err);
       });
   }
@@ -86,5 +103,15 @@ export class AuthentificateComponent implements OnInit {
           this.router.navigate(['/login']);
       }
       return this.location.back();
+  }
+  private timing(pathto: string, timeout: number) {
+      this.shared.setDecimal(timeout);
+      this.timer = setInterval(() => {
+          this.shared.decimal--;
+          if (this.shared.decimal === 0) clearInterval(this.timer);
+      }, 1000);
+      setTimeout(() => {
+          this.router.navigate([pathto]);
+      }, timeout * 1000);
   }
 }

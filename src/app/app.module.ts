@@ -10,9 +10,11 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatCardModule} from '@angular/material/card';
 import {MatInputModule} from '@angular/material/input';
+import {MatDialogModule} from '@angular/material/dialog';
 
 import { TextMaskModule } from 'angular2-text-mask';
 import { AuthGuardGuard } from './guards/auth-guard.guard';
+import { CheckExpiresGuard } from './guards/check-expires.guard';
 import { AppComponent } from './app.component';
 import { Routing } from './routing';
 import { LoginComponent } from './components/login/login.component';
@@ -26,19 +28,22 @@ import { UserService } from './services/user.service';
 import { AuthenticationService } from './services/authentication.service';
 import { KeysPipe } from './pipes/keys.pipe';
 import { UserEditComponent } from './components/user-edit/user-edit.component';
+import { ChangePassModalComponent } from './components/change-pass-modal/change-pass-modal.component';
 
 @NgModule({
     exports: [
         MatCardModule,
         MatInputModule,
         MatCheckboxModule,
-        MatFormFieldModule
+        MatFormFieldModule,
+        MatDialogModule
     ]
 })
 export class MaterialModule {}
 
 @NgModule({
   declarations: [
+    ChangePassModalComponent,
     AppComponent,
     AuthentificateComponent,
     UserDetailComponent,
@@ -60,6 +65,7 @@ export class MaterialModule {}
   ],
   providers: [
       AuthGuardGuard,
+      CheckExpiresGuard,
       UserService,
       AuthenticationService,
       {
@@ -73,6 +79,7 @@ export class MaterialModule {}
           multi: true
       }
   ],
+  entryComponents: [ChangePassModalComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

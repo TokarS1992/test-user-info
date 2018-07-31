@@ -11,6 +11,10 @@ export class BackendApiInterceptor implements HttpInterceptor {
   constructor() { }
   intercept(request: HttpRequest<any>, next: HttpHandler) {
       const users: User[] = JSON.parse(localStorage.getItem('users')) || [];
+      const getIdFromUrl = function (url: string): number {
+          const urlParts = url.split('/');
+          return parseInt(urlParts[urlParts.length - 1]);
+      };
 
       return Observable.of(null).mergeMap(() => {
           if (request.url.endsWith('/api/authenticate') && request.method === 'POST') {
@@ -21,16 +25,21 @@ export class BackendApiInterceptor implements HttpInterceptor {
 
               if (findedUsers.length) {
                   const user = findedUsers[0];
-                  const body = {
+                  const body: User = {
                       id: user.id,
                       username: user.username,
                       secondname: user.secondname,
                       phone: user.phone,
                       email: user.email,
                       password: user.password,
+                      remember: request.body.remember,
+                      products: [],
                       token: 'fake-jwt-token'
                   };
                   // return status 200 and body find user
+                  if (!request.body.remember) {
+                      body.timestamp = new Date().valueOf();
+                  }
                   localStorage.setItem('currentUser', JSON.stringify(body));
                   return next.handle(request);
               } else {
@@ -47,16 +56,20 @@ export class BackendApiInterceptor implements HttpInterceptor {
                 return Observable.throwError(`User ${request.body.username} has already email`);
             }
             newUser.id = users.length + 1;
+            newUser.products = [];
             users.push(newUser);
             localStorage.setItem('users', JSON.stringify(users));
-            return Observable.of(new HttpResponse({ status: 200, body: newUser }));
+            return Observable.of(new HttpResponse({ status: 201, body: newUser }));
           }
           if (request.url.match(/\/api\/users\/\d+$/) && request.method === 'GET') {
-              const urlParts = request.url.split('/');
-              const id = parseInt(urlParts[urlParts.length - 1]);
+              const id = getIdFromUrl(request.url);
               const currentUser = JSON.parse(localStorage.getItem('currentUser'));
               const findedUsers = users.filter((user: User) => {
                   return user.id === id;
+              }).map((user: User) => {
+                  delete user.password;
+                  delete user.token;
+                  return user;
               });
               if (findedUsers.length) {
                   if (findedUsers[0].id !== currentUser.id) {
@@ -64,7 +77,31 @@ export class BackendApiInterceptor implements HttpInterceptor {
                   }
                   return Observable.of(new HttpResponse({ status: 200, body: findedUsers[0] }));
               }
-              return Observable.throwError('User not found');
+              return Observable.throwError({ status: 404, body: 'User not found' });
+          }
+          if (request.url.match(/\/api\/users\/\d+$/) && request.method === 'PUT') {
+              const body = request.body;
+              const id = getIdFromUrl(request.url);
+              let findedUser: any[] = users.filter((user: any) => {
+                 return user.id === id;
+              });
+              if (findedUser) {
+                  findedUser = findedUser[0];
+                  for (const key in body) {
+                      if (body.hasOwnProperty(key)) {
+                          findedUser[key] = body[key];
+                      }
+                  }
+                  users.map((user: any) => {
+                     if (user.id === id) {
+                         user = findedUser;
+                     }
+                     return user;
+                  });
+              }
+              localStorage.setItem('currentUser', JSON.stringify(findedUser));
+              localStorage.setItem('users', JSON.stringify(users));
+              return Observable.of(new HttpResponse({ status: 200, body: findedUser}));
           }
       });
   }

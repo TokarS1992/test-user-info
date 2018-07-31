@@ -3,7 +3,9 @@
     <div class="col-md-10 offset-md-1">
       <h3>{{isEdit ? 'Edit user' : 'Register user'}}</h3>
 
-      <form action="" [formGroup]="formCreateUser" novalidate>
+      <div *ngIf="timer" class="alert alert-success">{{isEdit ? 'User updated' : 'User created'}}. Waiting... Redirect to {{isEdit ? 'profile' : 'login'}} across {{shared.decimal}}</div>
+
+      <form [formGroup]="formCreateUser" novalidate>
         <div class="form-group">
           <label>User name</label>
 
@@ -15,7 +17,7 @@
                *ngIf="formCreateUser.controls['username'].errors && formCreateUser.controls['username'].touched">
             <span *ngIf="formCreateUser.controls['username'].hasError('required')">This field required</span>
             <span *ngIf="formCreateUser.controls['username'].hasError('minlength')">Invalid enter min length password. Correct length: {{minLength}}</span>
-            <span *ngIf="formCreateUser.controls['username'].hasError('maxlength')">Invalid enter max length password. Correct length: 255</span>
+            <span *ngIf="formCreateUser.controls['username'].hasError('maxlength')">Invalid enter max length password. Correct length: {{maxLength}}</span>
           </div>
         </div>
 
@@ -30,7 +32,7 @@
                *ngIf="formCreateUser.controls['secondname'].errors && formCreateUser.controls['secondname'].touched">
               <span *ngIf="formCreateUser.controls['secondname'].hasError('required')">This field required</span>
               <span *ngIf="formCreateUser.controls['secondname'].hasError('minlength')">Invalid enter min length password. Correct length: {{minLength}}</span>
-              <span *ngIf="formCreateUser.controls['secondname'].hasError('maxlength')">Invalid enter max length password. Correct length: 255</span>
+              <span *ngIf="formCreateUser.controls['secondname'].hasError('maxlength')">Invalid enter max length password. Correct length: {{maxLength}}</span>
           </div>
       </div>
 
@@ -61,25 +63,29 @@
           </div>
         </div>
 
-        <div class="form-group">
+        <div class="form-group" *ngIf="!isEdit">
           <label>Password</label>
 
           <mat-form-field class="full-width">
-            <input matInput placeholder="Password" [formControl]="formCreateUser.controls['password']">
+            <input matInput placeholder="Password" [formControl]="formCreateUser.controls['password']" type="password">
           </mat-form-field>
 
           <div class="alert alert-danger"
                *ngIf="formCreateUser.controls['password'].errors && formCreateUser.controls['password'].touched">
             <span *ngIf="formCreateUser.controls['password'].hasError('required')">This field required</span>
             <span *ngIf="formCreateUser.controls['password'].hasError('minlength') && formCreateUser.controls['password'].hasError('pattern')">Invalid enter symbols. Correct: any letters or/and numbers without special character</span>
-            <span *ngIf="formCreateUser.controls['password'].hasError('minlength')">Invalid enter min length password. Correct length: {{minLength}}</span>
-            <span *ngIf="formCreateUser.controls['password'].hasError('maxlength')">Invalid enter max length password. Correct length: {{maxLength}}</span>
+            <span *ngIf="formCreateUser.controls['password'].hasError('minlength')">Invalid enter min length password. Correct length: {{minLengthPass}}</span>
+            <span *ngIf="formCreateUser.controls['password'].hasError('maxlength')">Invalid enter max length password. Correct length: {{maxLengthPass}}</span>
           </div>
         </div>
 
+          <div class="form-group" *ngIf="isEdit">
+              <button class="btn btn-link pointer" style="padding: 0;" (click)="changePassHandler()">Change password</button>
+          </div>
+
           <div class="form-group">
-              <button type="submit" class="btn btn-primary pointer" [disabled]="loading" (click)="(formCreateUser)">{{isEdit ? 'Edit' : 'Save'}}</button>
-              <button class="btn btn-link" (click)="toProfileOrLogin(); formCreateUser.reset()">Cancel</button>
+              <button type="submit" class="btn btn-primary pointer" [disabled]="loading" (click)="createUser(formCreateUser)">{{isEdit ? 'Edit' : 'Save'}}</button>
+              <button class="btn btn-link" (click)="toProfileOrLogin();">Cancel</button>
           </div>
       </form>
     </div>

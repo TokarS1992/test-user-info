@@ -24,7 +24,7 @@
                 <div class="form-group">
                     <label>Password</label>
                     <mat-form-field class="full-width">
-                        <input matInput placeholder="Password" [formControl]="form.controls['password']">
+                        <input matInput placeholder="Password" [formControl]="form.controls['password']" type="password">
                     </mat-form-field>
 
                     <div class="alert alert-danger"
@@ -34,6 +34,10 @@
                         <span *ngIf="form.controls['password'].hasError('minlength')">Invalid enter min length password. Correct length: {{minLength}}</span>
                         <span *ngIf="form.controls['password'].hasError('maxlength')">Invalid enter max length password. Correct length: {{maxLength}}</span>
                     </div>
+                </div>
+
+                <div class="form-group">
+                    <mat-checkbox [formControl]="form.controls['remember']">Remember me</mat-checkbox>
                 </div>
 
                 <div class="form-group">

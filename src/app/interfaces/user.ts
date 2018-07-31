@@ -1,3 +1,5 @@
+import { Product } from './product';
+
 export interface User {
     id: number;
     username: string;
@@ -6,4 +8,7 @@ export interface User {
     email: string;
     password: string;
     token: string;
+    remember: boolean;
+    timestamp?: Date|number;
+    products: Product[];
 }

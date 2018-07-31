@@ -5,6 +5,7 @@
                 <mat-card-content>
                     <div *ngFor="let item of currentUser | keys" class="user-info-item">
                         <span *ngIf="item !== 'id'">{{item}} : {{currentUser[item]}}</span>
+                        <span *ngIf="item === 'products' && currentUser[item].constructor.name === 'Array'">{{currentUser[item].length}} produsts</span>
                     </div>
                 </mat-card-content>
                 <mat-card-actions>
