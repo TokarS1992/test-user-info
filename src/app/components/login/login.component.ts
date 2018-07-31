@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AuthenticationService } from '../../services/authentication.service';
-import { FormGroup} from '@angular/forms';
+import { FormGroup , FormControl} from '@angular/forms';
 import { AbstructForm } from '../../utils/abstructForm';
 
 const minLength = 6;
@@ -35,7 +35,7 @@ export class LoginComponent extends AbstructForm implements OnInit {
             minLength: this.minLength,
             maxLength: this.maxLength,
             pattern: `[a-zA-Z0-9]+`}),
-        remember: this.getFormContol(false)
+        remember: new FormControl(false)
     });
   }
   public submitForm(form: FormGroup) {

@@ -1,0 +1,61 @@
+<h1 mat-dialog-title>Hi, {{data.model.username}}!</h1>
+<h5>Change password window</h5>
+
+<div *ngIf="error" class="alert alert-danger">{{error}}</div>
+
+<div mat-dialog-content style="height: 80%">
+    <form [formGroup]="formChangePass" novalidate>
+        <div class="form-group">
+            <label>Old pass</label>
+
+            <mat-form-field class="full-width">
+                <input matInput placeholder="Old pass" [formControl]="formChangePass.controls['oldpass']" type="password">
+            </mat-form-field>
+
+            <div class="alert alert-danger"
+                 *ngIf="formChangePass.controls['oldpass'].errors && formChangePass.controls['oldpass'].touched">
+                <span *ngIf="formChangePass.controls['oldpass'].hasError('required')">This field required</span>
+                <span *ngIf="formChangePass.controls['oldpass'].hasError('minlength') && formChangePass.controls['oldpass'].hasError('pattern')">Invalid enter symbols. Correct: any letters or/and numbers without special character</span>
+                <span *ngIf="formChangePass.controls['oldpass'].hasError('minlength')">Invalid enter min length password. Correct length: {{minLength}}</span>
+                <span *ngIf="formChangePass.controls['oldpass'].hasError('maxlength')">Invalid enter max length password. Correct length: {{maxLength}}</span>
+            </div>
+        </div>
+
+        <div class="form-group" *ngIf="!isEdit">
+            <label>New pass</label>
+
+            <mat-form-field class="full-width">
+                <input matInput placeholder="New pass" [formControl]="formChangePass.controls['newpass']" type="password">
+            </mat-form-field>
+
+            <div class="alert alert-danger"
+                 *ngIf="formChangePass.controls['newpass'].errors && formChangePass.controls['newpass'].touched">
+                <span *ngIf="formChangePass.controls['newpass'].hasError('required')">This field required</span>
+                <span *ngIf="formChangePass.controls['newpass'].hasError('minlength') && formChangePass.controls['newpass'].hasError('pattern')">Invalid enter symbols. Correct: any letters or/and numbers without special character</span>
+                <span *ngIf="formChangePass.controls['newpass'].hasError('minlength')">Invalid enter min length password. Correct length: {{minLength}}</span>
+                <span *ngIf="formChangePass.controls['newpass'].hasError('maxlength')">Invalid enter max length password. Correct length: {{maxLength}}</span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Repeat pass</label>
+
+            <mat-form-field class="full-width">
+                <input matInput placeholder="New pass" [formControl]="formChangePass.controls['repeat']" type="password">
+            </mat-form-field>
+
+            <div class="alert alert-danger"
+                 *ngIf="formChangePass.controls['repeat'].errors && formChangePass.controls['repeat'].touched">
+                <span *ngIf="formChangePass.controls['repeat'].hasError('required')">This field required</span>
+                <span *ngIf="formChangePass.controls['repeat'].hasError('minlength') && formChangePass.controls['repeat'].hasError('pattern')">Invalid enter symbols. Correct: any letters or/and numbers without special character</span>
+                <span *ngIf="formChangePass.controls['repeat'].hasError('minlength')">Invalid enter min length password. Correct length: {{minLength}}</span>
+                <span *ngIf="formChangePass.controls['repeat'].hasError('maxlength')">Invalid enter max length password. Correct length: {{maxLength}}</span>
+            </div>
+        </div>
+    </form>
+
+    <div mat-dialog-actions>
+        <button mat-button (click)="checkForm(formChangePass)" class="btn btn-success">Change</button>
+        <button mat-button (click)="onNoClick()" class="btn btn-primary">Cancel</button>
+    </div>
+</div>

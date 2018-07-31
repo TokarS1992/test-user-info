@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../services/user.service';
 import { MatDialog } from '@angular/material';
+import { Idata } from '../change-pass-modal/change-pass-modal.component';
 import { ChangePassModalComponent } from '../change-pass-modal/change-pass-modal.component';
 
 @Component({
@@ -33,15 +34,19 @@ export class UserEditComponent implements OnInit {
   openModalChangePass() {
       const dialogRef = this.dialog.open(ChangePassModalComponent, {
           width: '500px',
-          height: '600px',
+          height: '80vh',
           data: {
               model: this.modelFromDetail,
               newpass: ''
           }
       });
 
-      dialogRef.afterClosed().subscribe(result => {
-          console.log(result);
+      dialogRef.afterClosed().subscribe((result: Idata) => {
+          if (result) {
+              this.userService.updateUserById(result.model.id, result.model).subscribe(updateUser => {
+                  console.log(updateUser);
+              });
+          }
       });
   }
 }
