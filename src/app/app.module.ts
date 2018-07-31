@@ -11,6 +11,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatCardModule} from '@angular/material/card';
 import {MatInputModule} from '@angular/material/input';
 import {MatDialogModule} from '@angular/material/dialog';
+import {MatExpansionModule} from '@angular/material/expansion';
 
 import { TextMaskModule } from 'angular2-text-mask';
 import { AuthGuardGuard } from './guards/auth-guard.guard';
@@ -26,9 +27,12 @@ import { JwtInterceptor } from './interceptors/jwt.interceptor';
 import { NotFountPageComponent } from './components/not-fount-page/not-fount-page.component';
 import { UserService } from './services/user.service';
 import { AuthenticationService } from './services/authentication.service';
+import { ProductService } from './services/product.service';
 import { KeysPipe } from './pipes/keys.pipe';
 import { UserEditComponent } from './components/user-edit/user-edit.component';
 import { ChangePassModalComponent } from './components/change-pass-modal/change-pass-modal.component';
+import { ListProductsComponent } from './components/list-products/list-products.component';
+import { CreateProductComponent } from './components/create-product/create-product.component';
 
 @NgModule({
     exports: [
@@ -36,13 +40,16 @@ import { ChangePassModalComponent } from './components/change-pass-modal/change-
         MatInputModule,
         MatCheckboxModule,
         MatFormFieldModule,
-        MatDialogModule
-    ]
+        MatDialogModule,
+        MatExpansionModule
+    ],
+    declarations: [CreateProductComponent]
 })
 export class MaterialModule {}
 
 @NgModule({
   declarations: [
+    ListProductsComponent,
     ChangePassModalComponent,
     AppComponent,
     AuthentificateComponent,
@@ -64,6 +71,7 @@ export class MaterialModule {}
     Routing
   ],
   providers: [
+      ProductService,
       AuthGuardGuard,
       CheckExpiresGuard,
       UserService,

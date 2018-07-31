@@ -48,4 +48,7 @@ export class UserDetailComponent implements OnInit {
         this.authService.logout();
         this.router.navigate(['/']);
     }
+    get listProducts() {
+        return this.httpUserService.getLocalUser().products;
+    }
 }

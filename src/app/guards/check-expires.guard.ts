@@ -4,6 +4,9 @@ import { Observable } from 'rxjs';
 import { AuthenticationService } from '../services/authentication.service';
 import { User } from '../interfaces/user';
 
+// 5 minutes
+const expires = 5 * 60 * 1000;
+
 @Injectable({
   providedIn: 'root'
 })
@@ -19,7 +22,7 @@ export class CheckExpiresGuard implements CanActivate {
       const currentUser: User = JSON.parse(localStorage.getItem('currentUser'));
       if (currentUser.timestamp) {
           const timestamp: any = currentUser.timestamp;
-          if (new Date().valueOf() - timestamp > 5 * 60 * 1000) {
+          if (new Date().valueOf() - timestamp > expires) {
               this.authService.logout();
               this.router.navigate(['/login']);
               return false;
