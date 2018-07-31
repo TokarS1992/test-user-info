@@ -3,6 +3,7 @@ import { UserService } from '../../services/user.service';
 import { AuthenticationService } from '../../services/authentication.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { User } from '../../interfaces/user';
+import { Product } from '../../interfaces/product';
 
 @Component({
   selector: 'app-user-detail',
@@ -44,11 +45,15 @@ export class UserDetailComponent implements OnInit {
     public toEditProfile() {
         this.router.navigate([`/users/${this.httpUserService.getLocalUser().id}/edit`]);
     }
+    public updateUserInfo() {
+        const currentUser = this.httpUserService.getLocalUser();
+        delete currentUser.password;
+        delete currentUser.token;
+        delete currentUser.remember;
+        this.currentUser = currentUser;
+    }
     public logout() {
         this.authService.logout();
         this.router.navigate(['/']);
-    }
-    get listProducts() {
-        return this.httpUserService.getLocalUser().products;
     }
 }

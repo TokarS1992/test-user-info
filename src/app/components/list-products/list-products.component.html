@@ -4,9 +4,36 @@
       <h3>List produsts</h3>
       <div class="wrapper">
           <div *ngIf="listProductsUser.length === 0">None products</div>
-          <div class="text-light add-product">
-              <button class="btn btn-primary pointer">Add product</button>
+
+          <div class="text-light add-product" style="margin-bottom: 20px">
+              <button class="btn btn-primary pointer" (click)="openModalChangePass()">Add product</button>
           </div>
+
+          <mat-accordion *ngIf="listProductsUser.length > 0">
+              <mat-expansion-panel *ngFor="let product of listProductsUser">
+                  <mat-expansion-panel-header>
+                      <mat-panel-title style="width: 25%;">
+                          <span>Name: {{product.name}}</span>
+                      </mat-panel-title>
+
+                      <mat-panel-description>
+                          <span>Price: {{product.price}}</span>
+                      </mat-panel-description>
+                  </mat-expansion-panel-header>
+
+                  <div class="description" style="margin-bottom: 15px;"><span>Description: </span>{{product.description}}</div>
+                  <div>
+                      <button class="btn btn-primary pointer" (click)="openModalChangePass(product, true)">Edit</button>
+                  </div>
+              </mat-expansion-panel>
+          </mat-accordion>
+
+          <mat-paginator [length]="productsLength"
+                         [pageSize]="pageSize"
+                         [pageSizeOptions]="pageSizeOptions"
+                         *ngIf="listProductsUser.length > 0"
+                         (page)="changePaginate($event)">
+          </mat-paginator>
       </div>
     </div>
   </div>

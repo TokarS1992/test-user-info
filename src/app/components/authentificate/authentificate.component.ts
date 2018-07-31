@@ -76,27 +76,26 @@ export class AuthentificateComponent extends AbstructForm implements OnInit, OnC
       this.changePass.emit();
   }
   private createUser(form: FormGroup) {
-      if (form.invalid) {
-          for (const control in form.controls) {
-              form.controls[control].markAsTouched();
-          }
-          return false;
-      }
-      this.loading = true;
       const body = {};
-      for (const control in form.controls) {
-          body[control] = form.controls[control].value;
+      const checkForm = this.checkControlMarkAsTouched(form);
+      if (!checkForm) {
+          return false;
+      } else {
+          this.loading = true;
+          for (const control in form.controls) {
+              body[control] = form.controls[control].value;
+          }
+          if (this.isEdit) {
+              this.editForm.emit({user: body});
+              return true;
+          }
+          this.httpUserService.createUser(body).subscribe(data => {
+              this.timing('/login', timerAcrossToLogin);
+          }, err => {
+              this.loading = false;
+              console.log(err);
+          });
       }
-      if (this.isEdit) {
-          this.editForm.emit({user: body});
-          return true;
-      }
-      this.httpUserService.createUser(body).subscribe(data => {
-          this.timing('/login', timerAcrossToLogin);
-      }, err => {
-          this.loading = false;
-          console.log(err);
-      });
   }
   private toProfileOrLogin() {
       if (!this.isEdit) {

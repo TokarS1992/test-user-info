@@ -12,6 +12,7 @@ import {MatCardModule} from '@angular/material/card';
 import {MatInputModule} from '@angular/material/input';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatExpansionModule} from '@angular/material/expansion';
+import {MatPaginatorModule} from '@angular/material/paginator';
 
 import { TextMaskModule } from 'angular2-text-mask';
 import { AuthGuardGuard } from './guards/auth-guard.guard';
@@ -36,19 +37,20 @@ import { CreateProductComponent } from './components/create-product/create-produ
 
 @NgModule({
     exports: [
+        MatPaginatorModule,
         MatCardModule,
         MatInputModule,
         MatCheckboxModule,
         MatFormFieldModule,
         MatDialogModule,
         MatExpansionModule
-    ],
-    declarations: [CreateProductComponent]
+    ]
 })
 export class MaterialModule {}
 
 @NgModule({
   declarations: [
+    CreateProductComponent,
     ListProductsComponent,
     ChangePassModalComponent,
     AppComponent,
@@ -87,7 +89,7 @@ export class MaterialModule {}
           multi: true
       }
   ],
-  entryComponents: [ChangePassModalComponent],
+  entryComponents: [ChangePassModalComponent, CreateProductComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

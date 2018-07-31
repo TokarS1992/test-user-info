@@ -4,8 +4,8 @@
             <mat-card class="user-info">
                 <mat-card-content>
                     <div *ngFor="let item of currentUser | keys" class="user-info-item">
-                        <span *ngIf="item !== 'id'">{{item}} : {{currentUser[item]}}</span>
-                        <span *ngIf="item === 'products' && currentUser[item].constructor.name === 'Array'">{{currentUser[item].length}} produsts</span>
+                        <span *ngIf="item !== 'id' && item !=='products'">{{item}} : {{currentUser[item]}}</span>
+                        <span *ngIf="item === 'products' && currentUser[item].constructor.name === 'Array'">{{item}} {{currentUser[item].length}} item</span>
                     </div>
                 </mat-card-content>
                 <mat-card-actions>
@@ -17,4 +17,4 @@
     </div>
 </div>
 
-<app-list-products [listProductsUser]="listProducts"></app-list-products>
+<app-list-products (updateUserDetail)="updateUserInfo()"></app-list-products>

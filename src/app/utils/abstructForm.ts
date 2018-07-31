@@ -1,11 +1,8 @@
-import { FormControl, Validators} from '@angular/forms';
+import { FormControl, Validators, FormGroup} from '@angular/forms';
 
 export abstract class AbstructForm {
     public getFormContol(value: any, config?: object) {
         const validators = [];
-        // if (Object.keys(config).length === 0) {
-        //     return new FormControl(value);
-        // }
         for (const key in config) {
             if (config.hasOwnProperty(key)) {
                 if (typeof config[key] === 'boolean' && config[key]) {
@@ -16,5 +13,14 @@ export abstract class AbstructForm {
             }
         }
         return new FormControl(value, validators);
+    }
+    public checkControlMarkAsTouched(form: FormGroup) {
+        if (form.invalid) {
+            for (const control in form.controls) {
+                form.controls[control].markAsTouched();
+            }
+            return false;
+        }
+        return true;
     }
 }
