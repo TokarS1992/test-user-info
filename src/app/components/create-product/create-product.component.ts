@@ -26,17 +26,16 @@ export class CreateProductComponent extends AbstructForm implements OnInit {
     }
 
     ngOnInit() {
-        console.log(this.data.model);
         this.formCreateProduct = new FormGroup({
             name: this.getFormControl(this.data.model.name, {required: true, maxLength: this.maxLength}),
             description: this.getFormControl(this.data.model.description, {required: true, maxLength: this.maxDescription}),
             price: this.getFormControl(this.data.model.price, {required: true, pattern: /\d+\.\d{2}/})
         });
     }
-    onNoClick(): void {
+    public onNoClick(): void {
         this.dialogRef.close();
     }
-    checkForm(form: FormGroup) {
+    public checkForm(form: FormGroup) {
         const checkValidForm = this.checkControlMarkAsTouched(form);
         const body: any = {};
         if (!checkValidForm) {

@@ -41,7 +41,7 @@ export class ListProductsComponent implements OnInit {
            return data.selected;
         }) || [];
     }
-    shapingListProducts(pageNumber: number, pageSize: number) {
+    public shapingListProducts(pageNumber: number, pageSize: number): void {
         this.listProductsUser = [];
         this.productService.getProducts(pageNumber, pageSize).forEach((product: Product) => {
             this.listProductsUser.push({
@@ -50,32 +50,36 @@ export class ListProductsComponent implements OnInit {
             });
         });
     }
-    changePaginate({ pageIndex, pageSize }) {
+    public changePaginate({ pageIndex, pageSize }): void {
         this.pageSize = pageSize;
         this.pageNumber = pageIndex;
         this.shapingListProducts(pageIndex, pageSize);
     }
-    deleteProduct(id) {
+    public deleteProduct(id): void {
         this.productService.deleteProduct(id).subscribe((data: any) => {
             this.updateUserDetail.emit();
-            if (this.productsLength === this.pageNumber * this.pageSize) {
-                this.pageNumber--;
-                this.namePaginator.previousPage();
-            }
+            this.checkCurrentPageAfterDelete();
             this.shapingListProducts(this.pageNumber, this.pageSize);
         });
     }
-    deleteAll() {
+    public deleteAll(): void {
         const deleted = [];
         for (let p = 0; p < this.selectedProducts.length; p++) {
             deleted.push(Observable.fromPromise(this.productService.deleteProduct(this.selectedProducts[p].model.id)));
         }
         Observable.forkJoin(deleted).subscribe(data => {
-            this.shapingListProducts(this.pageNumber, this.pageSize);
             this.updateUserDetail.emit();
+            this.checkCurrentPageAfterDelete();
+            this.shapingListProducts(this.pageNumber, this.pageSize);
         });
     }
-    openModalChangePass(data?: Product, isEdit: boolean = false) {
+    public checkCurrentPageAfterDelete(): void {
+        if (this.productsLength === this.pageNumber * this.pageSize) {
+            this.pageNumber--;
+            this.namePaginator.previousPage();
+        }
+    }
+    public openModalChangePass(data?: Product, isEdit: boolean = false): void {
         const dialogRef = this.dialog.open(CreateProductComponent, {
             width: '500px',
             height: '80vh',
@@ -103,5 +107,4 @@ export class ListProductsComponent implements OnInit {
             }
         });
     }
-
 }
