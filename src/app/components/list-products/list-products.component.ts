@@ -5,6 +5,7 @@ import { ProductService } from '../../services/product.service';
 import { UserService } from '../../services/user.service';
 import { CreateProductComponent } from '../create-product/create-product.component';
 import { IData } from '../create-product/create-product.component';
+import { from } from 'rxjs';
 import { Observable } from 'rxjs/observable';
 
 interface IProduct {
@@ -65,7 +66,7 @@ export class ListProductsComponent implements OnInit {
     public deleteAll(): void {
         const deleted = [];
         for (let p = 0; p < this.selectedProducts.length; p++) {
-            deleted.push(Observable.fromPromise(this.productService.deleteProduct(this.selectedProducts[p].model.id)));
+            deleted.push(from(this.productService.deleteProduct(this.selectedProducts[p].model.id)));
         }
         Observable.forkJoin(deleted).subscribe(data => {
             this.updateUserDetail.emit();
