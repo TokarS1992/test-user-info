@@ -55,11 +55,11 @@ export class AuthentificateComponent extends AbstructForm implements OnInit, OnC
   ngOnInit() {
       this.mask = ['+', '3', '8', '(', '0', /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, '-', /\d/, /\d/];
       this.formCreateUser = new FormGroup({
-          username: this.getFormContol(this.model.username, {required: true, minLength: this.minLength, maxLength: this.maxLength}),
-          secondname: this.getFormContol(this.model.username, {required: true, minLength: this.minLength, maxLength: this.maxLength}),
-          phone: this.getFormContol(this.model.phone, {required: true}),
-          email: this.getFormContol(this.model.email, {required: true, email: true}),
-          password: this.getFormContol(this.model.password, {
+          username: this.getFormControl(this.model.username, {required: true, minLength: this.minLength, maxLength: this.maxLength}),
+          secondname: this.getFormControl(this.model.username, {required: true, minLength: this.minLength, maxLength: this.maxLength}),
+          phone: this.getFormControl(this.model.phone, {required: true}),
+          email: this.getFormControl(this.model.email, {required: true, email: true}),
+          password: this.getFormControl(this.model.password, {
               required: true,
               minLength: this.minLengthPass,
               maxLength: this.maxLengthPass,

@@ -1,4 +1,4 @@
-<h1 mat-dialog-title>Create product modal</h1>
+<h1 mat-dialog-title>{{data.isEdit ? 'Edit' : 'Create'}} product modal</h1>
 
 <div mat-dialog-content style="height: 80%">
     <form [formGroup]="formCreateProduct" novalidate>

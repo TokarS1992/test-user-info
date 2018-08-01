@@ -1,7 +1,7 @@
 import { FormControl, Validators, FormGroup} from '@angular/forms';
 
 export abstract class AbstructForm {
-    public getFormContol(value: any, config?: object) {
+    public getFormControl(value: any, config?: object) {
         const validators = [];
         for (const key in config) {
             if (config.hasOwnProperty(key)) {

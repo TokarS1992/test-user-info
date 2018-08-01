@@ -25,7 +25,7 @@
 
                   <div class="description" style="margin-bottom: 15px;"><span>Description: </span>{{product.model.description}}</div>
                   <div>
-                      <button class="btn btn-primary pointer action-product" (click)="openModalChangePass(product, true)">Edit</button>
+                      <button class="btn btn-primary pointer action-product" (click)="openModalChangePass(product.model, true)">Edit</button>
                       <button class="btn btn-danger pointer action-product" (click)="deleteProduct(product.model.id)" [disabled]="!product.selected">Delete</button>
                   </div>
               </mat-expansion-panel>

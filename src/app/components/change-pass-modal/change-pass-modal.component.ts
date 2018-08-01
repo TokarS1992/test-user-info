@@ -49,17 +49,17 @@ export class ChangePassModalComponent extends AbstructForm implements OnInit {
     }
     ngOnInit() {
         this.formChangePass = new FormGroup({
-            oldpass: this.getFormContol('', {
+            oldpass: this.getFormControl('', {
                 required: true,
                 minLength: this.minLength,
                 maxLength: this.maxLength,
                 pattern: `[a-zA-Z0-9]+`}),
-            newpass: this.getFormContol('', {
+            newpass: this.getFormControl('', {
                 required: true,
                 minLength: this.minLength,
                 maxLength: this.maxLength,
                 pattern: `[a-zA-Z0-9]+`}),
-            repeat: this.getFormContol('', {
+            repeat: this.getFormControl('', {
                 required: true,
                 minLength: this.minLength,
                 maxLength: this.maxLength,
