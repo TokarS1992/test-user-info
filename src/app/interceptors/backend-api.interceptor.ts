@@ -114,7 +114,6 @@ export class BackendApiInterceptor implements HttpInterceptor {
               return Observable.of(new HttpResponse({ status: 200, body: findedUser}));
           }
           if (request.url.endsWith('/api/change') && request.method === 'POST') {
-              debugger
               const body = request.body;
               const currentUser: User = JSON.parse(localStorage.getItem('currentUser'));
               currentUser.password = body.newpass;
