@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { UserService } from './user.service';
-import {Observable} from "rxjs/observable";
+import {Observable} from 'rxjs/observable';
 import { ErrorsTypes } from '../utils/abstructError';
 
 @Injectable()

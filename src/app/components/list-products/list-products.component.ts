@@ -5,6 +5,7 @@ import { ProductService } from '../../services/product.service';
 import { UserService } from '../../services/user.service';
 import { CreateProductComponent } from '../create-product/create-product.component';
 import { IData } from '../create-product/create-product.component';
+import { Observable } from 'rxjs/observable';
 
 interface IProduct {
     model: Product;
@@ -35,6 +36,11 @@ export class ListProductsComponent implements OnInit {
     get productsLength() {
         return this.productService.getLocalProducts().length;
     }
+    get selectedProducts() {
+        return this.listProductsUser.filter((data: IProduct) => {
+           return data.selected;
+        }) || [];
+    }
     shapingListProducts(pageNumber: number, pageSize: number) {
         this.listProductsUser = [];
         this.productService.getProducts(pageNumber, pageSize).forEach((product: Product) => {
@@ -57,6 +63,16 @@ export class ListProductsComponent implements OnInit {
                 this.namePaginator.previousPage();
             }
             this.shapingListProducts(this.pageNumber, this.pageSize);
+        });
+    }
+    deleteAll() {
+        const deleted = [];
+        for (let p = 0; p < this.selectedProducts.length; p++) {
+            deleted.push(Observable.fromPromise(this.productService.deleteProduct(this.selectedProducts[p].model.id)));
+        }
+        Observable.forkJoin(deleted).subscribe(data => {
+            this.shapingListProducts(this.pageNumber, this.pageSize);
+            this.updateUserDetail.emit();
         });
     }
     openModalChangePass(data?: Product, isEdit: boolean = false) {

@@ -116,8 +116,10 @@ export class BackendApiInterceptor implements HttpInterceptor {
           if (request.url.endsWith('/api/products') && request.method === 'POST') {
               const body = request.body;
               const currentUser: User = JSON.parse(localStorage.getItem('currentUser'));
-              body.id = currentUser.products.length + 1;
-                  let findedUser: User[]|User = users.filter((user: any) => {
+              body.id = _.max(currentUser.products, (product: Product) => {
+                 return product.id;
+              }).id + 1 || currentUser.products.length + 1;
+              let findedUser: User[]|User = users.filter((user: any) => {
                   return user.id === currentUser.id;
               });
 

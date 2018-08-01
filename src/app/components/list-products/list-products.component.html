@@ -6,7 +6,8 @@
           <div *ngIf="listProductsUser.length === 0">None products</div>
 
           <div class="text-light add-product" style="margin-bottom: 20px">
-              <button class="btn btn-primary pointer" (click)="openModalChangePass()">Add product</button>
+              <button class="btn btn-primary pointer" (click)="openModalChangePass()" [ngClass]="{'action-product': selectedProducts.length > 0}">Add product</button>
+              <button class="btn btn-danger pointer" *ngIf="selectedProducts.length > 0" (click)="deleteAll()">Delete products: {{selectedProducts.length}}</button>
           </div>
 
           <mat-accordion *ngIf="listProductsUser.length > 0">
