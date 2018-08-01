@@ -72,10 +72,10 @@ export class AuthentificateComponent extends AbstructForm implements OnInit, OnC
           this.timing(`/users/${this.httpUserService.getLocalUser().id}`, timerAcrossToLogin);
       }
   }
-  private changePassHandler() {
+  public changePassHandler() {
       this.changePass.emit();
   }
-  private createUser(form: FormGroup) {
+  public createUser(form: FormGroup) {
       const body = {};
       const checkForm = this.checkControlMarkAsTouched(form);
       if (!checkForm) {
@@ -97,13 +97,13 @@ export class AuthentificateComponent extends AbstructForm implements OnInit, OnC
           });
       }
   }
-  private toProfileOrLogin() {
+  public toProfileOrLogin() {
       if (!this.isEdit) {
           this.router.navigate(['/login']);
       }
       return this.location.back();
   }
-  private timing(pathto: string, timeout: number) {
+  public timing(pathto: string, timeout: number) {
       this.shared.setDecimal(timeout);
       this.timer = setInterval(() => {
           this.shared.decimal--;

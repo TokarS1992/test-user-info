@@ -11,8 +11,8 @@
 
             <div class="alert alert-danger"
                  *ngIf="formCreateProduct.controls['name'].errors && formCreateProduct.controls['name'].touched">
-                <span *ngIf="formCreateProduct.controls['name'].hasError('required')">This field required</span>
-                <span *ngIf="formCreateProduct.controls['name'].hasError('maxlength')">Invalid enter max length password. Correct length: {{maxLength}}</span>
+                <div *ngIf="formCreateProduct.controls['name'].hasError('required')">This field required</div>
+                <div *ngIf="formCreateProduct.controls['name'].hasError('maxlength')">Invalid enter max length password. Correct length: {{maxLength}}</div>
             </div>
         </div>
 
@@ -25,8 +25,8 @@
 
             <div class="alert alert-danger"
                  *ngIf="formCreateProduct.controls['description'].errors && formCreateProduct.controls['description'].touched">
-                <span *ngIf="formCreateProduct.controls['description'].hasError('required')">This field required</span>
-                <span *ngIf="formCreateProduct.controls['description'].hasError('maxlength')">Invalid enter max length password. Correct length: {{maxDescription}}</span>
+                <div *ngIf="formCreateProduct.controls['description'].hasError('required')">This field required</div>
+                <div *ngIf="formCreateProduct.controls['description'].hasError('maxlength')">Invalid enter max length password. Correct length: {{maxDescription}}</div>
             </div>
         </div>
 
@@ -39,8 +39,8 @@
 
             <div class="alert alert-danger"
                  *ngIf="formCreateProduct.controls['price'].errors && formCreateProduct.controls['price'].touched">
-                <span *ngIf="formCreateProduct.controls['price'].hasError('required')">This field required</span>
-                <span *ngIf="formCreateProduct.controls['price'].hasError('pattern')">Invalid format. Example: 12.50</span>
+                <div *ngIf="formCreateProduct.controls['price'].hasError('required')">This field required</div>
+                <div *ngIf="formCreateProduct.controls['price'].hasError('pattern')">Invalid format. Example: 12.50</div>
             </div>
         </div>
 

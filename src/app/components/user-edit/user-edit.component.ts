@@ -16,7 +16,7 @@ import { ChangePassModalComponent } from '../change-pass-modal/change-pass-modal
   styleUrls: ['./user-edit.component.scss']
 })
 export class UserEditComponent implements OnInit {
-  public modelFromDetail;
+  private modelFromDetail;
   private isUpdateEdit = false;
   constructor(
       private userService: UserService,
@@ -26,12 +26,12 @@ export class UserEditComponent implements OnInit {
   }
 
   ngOnInit() {}
-  editProfile({ user} ) {
+  public editProfile({ user} ) {
       this.userService.updateUserById(this.userService.getLocalUser().id, user).subscribe(data => {
           this.isUpdateEdit = true;
       });
   }
-  openModalChangePass() {
+  public openModalChangePass() {
       const dialogRef = this.dialog.open(ChangePassModalComponent, {
           width: '500px',
           height: '80vh',
@@ -43,9 +43,7 @@ export class UserEditComponent implements OnInit {
 
       dialogRef.afterClosed().subscribe((result: Idata) => {
           if (result) {
-              this.userService.updateUserById(result.model.id, result.model).subscribe(updateUser => {
-                  console.log(updateUser);
-              });
+              this.userService.updateUserById(result.model.id, result.model);
           }
       });
   }

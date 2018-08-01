@@ -18,10 +18,10 @@ interface IProduct {
   styleUrls: ['./list-products.component.scss']
 })
 export class ListProductsComponent implements OnInit {
-    public listProductsUser: IProduct[] = [];
-    public pageNumber = 0;
-    public pageSize = 3;
-    public pageSizeOptions: number[] = [3, 6, 10, 100];
+    private listProductsUser: IProduct[] = [];
+    private pageNumber = 0;
+    private pageSize = 3;
+    private pageSizeOptions: number[] = [3, 6, 10, 100];
     @ViewChild('paginator') namePaginator: MatPaginator;
     @Output() updateUserDetail = new EventEmitter();
     constructor(

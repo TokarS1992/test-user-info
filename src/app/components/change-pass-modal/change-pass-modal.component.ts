@@ -15,19 +15,20 @@ export interface Idata {
   styleUrls: ['./change-pass-modal.component.scss']
 })
 export class ChangePassModalComponent extends AbstructForm implements OnInit {
-    public formChangePass: FormGroup;
-    public minLength = 6;
-    public maxLength = 16;
+    private formChangePass: FormGroup;
+    private minLength = 6;
+    private maxLength = 16;
     private error;
     constructor(
         public dialogRef: MatDialogRef<ChangePassModalComponent>,
         @Inject(MAT_DIALOG_DATA) public data: Idata) {
         super();
     }
-    onNoClick(): void {
+    public onNoClick(): void {
         this.dialogRef.close();
     }
-    checkForm(form: FormGroup) {
+    public checkForm(form: FormGroup) {
+        console.log(form);
         if (form.valid) {
             const { oldpass, newpass, repeat} = form.controls;
             if (oldpass.value !== this.data.model.password) {

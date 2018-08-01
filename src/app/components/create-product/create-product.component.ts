@@ -16,9 +16,9 @@ export interface IData {
   styleUrls: ['./create-product.component.scss']
 })
 export class CreateProductComponent extends AbstructForm implements OnInit {
-    public formCreateProduct: FormGroup;
-    public maxLength = 255;
-    public maxDescription = 1000;
+    private formCreateProduct: FormGroup;
+    private maxLength = 255;
+    private maxDescription = 1000;
     constructor(
         public dialogRef: MatDialogRef<ListProductsComponent>,
         @Inject(MAT_DIALOG_DATA) public data: IData) {
