@@ -28,7 +28,6 @@ export class ChangePassModalComponent extends AbstructForm implements OnInit {
         this.dialogRef.close();
     }
     public checkForm(form: FormGroup) {
-        console.log(form);
         if (form.valid) {
             const { oldpass, newpass, repeat} = form.controls;
             if (oldpass.value !== this.data.model.password) {

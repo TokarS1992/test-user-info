@@ -36,6 +36,14 @@ export class UserService extends ErrorsTypes {
         catchError(this.handleCatchError)
     );
   }
+  public changePass(body) {
+      return this.http.post('/api/change', body).pipe(
+          map((data: any) => {
+              return data;
+          }),
+          catchError(this.handleCatchError)
+      );
+  }
   public getLocalUser() {
       return JSON.parse(localStorage.getItem('currentUser'));
   }

@@ -43,7 +43,7 @@ export class UserEditComponent implements OnInit {
 
       dialogRef.afterClosed().subscribe((result: Idata) => {
           if (result) {
-              this.userService.updateUserById(result.model.id, result.model);
+              this.userService.changePass({newpass: result.newpass});
           }
       });
   }

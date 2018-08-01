@@ -113,6 +113,21 @@ export class BackendApiInterceptor implements HttpInterceptor {
               localStorage.setItem('users', JSON.stringify(users));
               return Observable.of(new HttpResponse({ status: 200, body: findedUser}));
           }
+          if (request.url.endsWith('/api/change') && request.method === 'POST') {
+              debugger
+              const body = request.body;
+              const currentUser: User = JSON.parse(localStorage.getItem('currentUser'));
+              currentUser.password = body.newpass;
+              users.map((user: any) => {
+                  if (user.id === currentUser.id) {
+                      user.password = body.newpass;
+                  }
+                  return user;
+              });
+              localStorage.setItem('currentUser', JSON.stringify(currentUser));
+              localStorage.setItem('users', JSON.stringify(users));
+              return Observable.of(new HttpResponse({ status: 200, body: `User pass updated`}));
+          }
           if (request.url.endsWith('/api/products') && request.method === 'POST') {
               const body = request.body;
               const currentUser: User = JSON.parse(localStorage.getItem('currentUser'));
