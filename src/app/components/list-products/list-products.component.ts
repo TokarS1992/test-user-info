@@ -102,6 +102,7 @@ export class ListProductsComponent implements OnInit {
             }
             if (res && res.isEdit) {
                 this.productService.updateProductById(res.model.id, res.model).subscribe(() => {
+                    this.shapingListProducts(this.pageNumber, this.pageSize);
                     this.updateUserDetail.emit();
                 });
             }
