@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/observable';
 import { User } from '../interfaces/user';
 import 'rxjs-compat';
 import {Product} from "../interfaces/product";
+import * as _ from 'underscore';
 
 @Injectable()
 export class BackendApiInterceptor implements HttpInterceptor {
@@ -165,6 +166,22 @@ export class BackendApiInterceptor implements HttpInterceptor {
               localStorage.setItem('currentUser', JSON.stringify(currentUser));
               localStorage.setItem('users', JSON.stringify(users));
               return Observable.of(new HttpResponse({ status: 200, body: findedProduct}));
+          }
+          if (request.url.match(/\/api\/products\/\d+$/) && request.method === 'DELETE') {
+              const id = getIdFromUrl(request.url);
+              const currentUser: User = JSON.parse(localStorage.getItem('currentUser'));
+              currentUser.products = currentUser.products.filter((product: any) => {
+                  return product.id !== id;
+              });
+              users.map((user: any) => {
+                  if (user.id === currentUser.id) {
+                      user.products = currentUser.products;
+                  }
+                  return user;
+              });
+              localStorage.setItem('currentUser', JSON.stringify(currentUser));
+              localStorage.setItem('users', JSON.stringify(users));
+              return Observable.of(new HttpResponse({ status: 204, body: `Product with id: ${id} was deleted`}));
           }
       });
   }

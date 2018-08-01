@@ -13,22 +13,24 @@
               <mat-expansion-panel *ngFor="let product of listProductsUser">
                   <mat-expansion-panel-header>
                       <mat-panel-title style="width: 25%;">
-                          <span>Name: {{product.name}}</span>
+                          <mat-checkbox class="selected-product" [(ngModel)]="product.selected"></mat-checkbox>
+                          <span>Name: {{product.model.name}}</span>
                       </mat-panel-title>
 
                       <mat-panel-description>
-                          <span>Price: {{product.price}}</span>
+                          <span>Price: {{product.model.price}}</span>
                       </mat-panel-description>
                   </mat-expansion-panel-header>
 
-                  <div class="description" style="margin-bottom: 15px;"><span>Description: </span>{{product.description}}</div>
+                  <div class="description" style="margin-bottom: 15px;"><span>Description: </span>{{product.model.description}}</div>
                   <div>
-                      <button class="btn btn-primary pointer" (click)="openModalChangePass(product, true)">Edit</button>
+                      <button class="btn btn-primary pointer action-product" (click)="openModalChangePass(product, true)">Edit</button>
+                      <button class="btn btn-danger pointer action-product" (click)="deleteProduct(product.model.id)" [disabled]="!product.selected">Delete</button>
                   </div>
               </mat-expansion-panel>
           </mat-accordion>
 
-          <mat-paginator [length]="productsLength"
+          <mat-paginator #paginator [length]="productsLength"
                          [pageSize]="pageSize"
                          [pageSizeOptions]="pageSizeOptions"
                          *ngIf="listProductsUser.length > 0"

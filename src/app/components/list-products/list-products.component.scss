@@ -1,12 +1,18 @@
 .list-products {
   margin-top: 40px;
-}
+  .add-product {
+    display: flex;
+    justify-content: flex-end;
+  }
 
-.add-product {
-  display: flex;
-  justify-content: flex-end;
-}
+  .description {
+    word-wrap: break-word;
+  }
 
-.description {
-  word-wrap: break-word;
+  .selected-product {
+    margin-right: 10px;
+  }
+  .action-product {
+    margin-right: 10px;
+  }
 }

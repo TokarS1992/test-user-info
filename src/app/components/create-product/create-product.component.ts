@@ -1,6 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
-import { User } from '../../interfaces/user';
 import { FormGroup} from '@angular/forms';
 import { AbstructForm } from '../../utils/abstructForm';
 import { ListProductsComponent } from '../list-products/list-products.component';

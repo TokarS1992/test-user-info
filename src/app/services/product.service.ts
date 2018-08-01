@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { UserService } from './user.service';
-import { User } from '../interfaces/user';
 import {Observable} from "rxjs/observable";
 import { ErrorsTypes } from '../utils/abstructError';
 
@@ -28,6 +27,14 @@ export class ProductService extends ErrorsTypes {
             catchError(this.handleCatchError)
         );
     }
+    public deleteProduct(id: number) {
+        return this.http.delete(`/api/products/${id}`).pipe(
+            map((data: any) => {
+                return data;
+            }),
+            catchError(this.handleCatchError)
+        );
+    }
     // public getProducts(pageNumber: any, pageSize: any) {
     //     let params = new HttpParams();
     //     params = params.set('pageNumber', pageNumber).set('pageSize', pageSize);
@@ -39,7 +46,6 @@ export class ProductService extends ErrorsTypes {
     //     );
     // }
     public getProducts(pageNumber: number, pageSize: number) {
-        console.log(this.userService.getLocalUser().products, pageNumber, pageSize);
         return this.userService
             .getLocalUser()
             .products
